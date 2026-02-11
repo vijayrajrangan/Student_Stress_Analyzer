@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Stress Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>🧠 Student Stress Analyzer</h1>
+    <div class="subtitle">Enter your daily lifestyle details</div>
+
+    <form method="POST">
+        <label>🛌 Sleep Hours (per day)</label>
+        <input type="number" name="sleep" min="1" max="12" required>
+
+        <label>📚 Study Hours (per day)</label>
+        <input type="number" name="study" min="1" max="12" required>
+
+        <label>🙂 Mood Level (1 to 10)</label>
+        <input type="number" name="mood" min="1" max="10" required>
+
+        <button type="submit">Analyze Stress</button>
+    </form>
+
+    {% if result %}
+    <div class="result {{ css_class }}">
+        Stress Level: {{ result }}<br>
+        <small>{{ advice }}</small>
+    </div>
+
+
+{% endif %}
+
+
+    <div class="footer">
+        Student Mini Project • ML + Flask
+    </div>
+</div>
+{% if result %}
+<script>
+    const ctx = document.getElementById('stressChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Sleep Hours', 'Study Hours', 'Mood Level'],
+            datasets: [{
+                label: 'Daily Lifestyle Analysis',
+                data: [{{ sleep|int }}, {{ study|int }}, {{ mood|int }}],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 12
+                }
+            }
+        }
+    });
+</script>
+<script>
+function closeModal() {
+    document.querySelector('.modal-overlay').style.display = 'none';
+}
+</script>
+
+{% endif %}
+{% if result %}
+<div class="modal-overlay">
+    <div class="modal">
+        <span class="close-btn" onclick="closeModal()">×</span>
+
+        <h2>Stress Analysis Result</h2>
+
+        <div class="result {{ css_class }}">
+            Stress Level: {{ result }}<br>
+            <small>{{ advice }}</small>
+        </div>
+
+        <canvas id="stressChart"></canvas>
+    </div>
+</div>
+{% endif %}
+
+</body>
+</html>
