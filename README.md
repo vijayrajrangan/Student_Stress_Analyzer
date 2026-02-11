@@ -1,6 +1,7 @@
 📊 Student Stress Analyzer
 
 A web app that predicts student stress levels based on their responses. Built with Python, Flask, and machine learning, this project helps students and educators monitor stress patterns easily.
+
 🚀 Features
 
 🧠 Stress Prediction – Predicts low, medium, or high stress levels.
